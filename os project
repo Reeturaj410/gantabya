@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Freeze Screen Fixer Tool</title>
+<style>
+body {
+    font-family: Arial;
+    background: 
+#0f172a;
+    color: white;
+    text-align: center;
+}
+.container {
+    margin-top: 50px;
+    background: 
+#1e293b;
+    padding: 20px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+}
+button {
+    padding: 10px;
+    margin: 10px;
+    background: 
+#38bdf8;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+button:hover {
+    background: 
+#0ea5e9;
+}
+select {
+    padding: 10px;
+    width: 60%;
+}
+#report {
+    margin-top: 20px;
+    text-align: left;
+    background: 
+#0f172a;
+    padding: 10px;
+    border-radius: 5px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🧊 Freeze Screen Fixer Tool</h1>
+<p>Select your problem:</p>
+<select id="issue">
+    <option value="ram">Low RAM / Memory Issue</option>
+    <option value="overload">Too Many Programs Running</option>
+    <option value="virus">Virus or Malware</option>
+    <option value="heat">Overheating System</option>
+    <option value="driver">Driver Problem</option>
+</select>
+<br>
+<button onclick="diagnose()">Diagnose</button>
+<button onclick="fix()">Fix Now</button>
+<div id="report"></div>
+</div>
+<script>
+let lastIssue = "";
+function diagnose() {
+    let issue = document.getElementById("issue").value;
+    lastIssue = issue;
+    let message = "";
+    if(issue === "ram") {
+        message = "⚠ Low RAM detected. System is overloaded with memory usage.";
+    }
+    else if(issue === "overload") {
+        message = "⚠ Too many applications are running.";
+    }
+    else if(issue === "virus") {
+        message = "⚠ Possible malware detected affecting performance.";
+    }
+    else if(issue === "heat") {
+        message = "⚠ System overheating detected.";
+    }
+    else if(issue === "driver") {
+        message = "⚠ Outdated or corrupted drivers found.";
+    }
+    document.getElementById("report").innerHTML = 
+        "<h3>Diagnosis Report</h3><p>" + message + "</p>";
+}
+function fix() {
+    let fixMsg = "";
+    if(lastIssue === "ram") {
+        fixMsg = "✔ Closing background apps and freeing memory...";
+    }
+    else if(lastIssue === "overload") {
+        fixMsg = "✔ Terminating unnecessary processes...";
+    }
+    else if(lastIssue === "virus") {
+        fixMsg = "✔ Running quick malware scan simulation...";
+    }
+    else if(lastIssue === "heat") {
+        fixMsg = "✔ Activating cooling optimization (simulated)...";
+    }
+    else if(lastIssue === "driver") {
+        fixMsg = "✔ Updating drivers (simulation completed)...";
+    }
+    document.getElementById("report").innerHTML += 
+        "<p><b>Fix Status:</b> " + fixMsg + "</p>";
+}
+</script>
+</body>
+</html>
