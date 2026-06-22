@@ -1,0 +1,99 @@
+import os
+import ctypes
+import platform
+import psutil
+from datetime import datetime
+
+# Check Administrator Privileges
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+# Generate Report
+def generate_report():
+    report = []
+
+    report.append("=" * 50)
+    report.append("OS HEALTH SCANNER REPORT")
+    report.append("=" * 50)
+    report.append(f"Scan Time: {datetime.now()}")
+    report.append("")
+
+    # OS Information
+    report.append("SYSTEM INFORMATION")
+    report.append(f"Operating System: {platform.system()} {platform.release()}")
+    report.append(f"Version: {platform.version()}")
+    report.append(f"Machine: {platform.machine()}")
+    report.append("")
+
+    # CPU Usage
+    cpu_usage = psutil.cpu_percent(interval=1)
+    report.append("CPU STATUS")
+    report.append(f"CPU Usage: {cpu_usage}%")
+
+    if cpu_usage > 85:
+        report.append("WARNING: High CPU usage detected.")
+    else:
+        report.append("CPU status is normal.")
+    report.append("")
+
+    # RAM Usage
+    memory = psutil.virtual_memory()
+    report.append("MEMORY STATUS")
+    report.append(f"RAM Usage: {memory.percent}%")
+
+    if memory.percent > 85:
+        report.append("WARNING: Low available memory.")
+    else:
+        report.append("Memory status is normal.")
+    report.append("")
+
+    # Disk Usage
+    disk = psutil.disk_usage('/')
+    report.append("DISK STATUS")
+    report.append(f"Disk Usage: {disk.percent}%")
+
+    if disk.percent > 90:
+        report.append("WARNING: Disk space is running low.")
+    else:
+        report.append("Disk status is normal.")
+    report.append("")
+
+    # Network Check
+    report.append("NETWORK STATUS")
+    net = psutil.net_if_stats()
+
+    for name, status in net.items():
+        report.append(
+            f"{name}: {'Connected' if status.isup else 'Disconnected'}"
+        )
+
+    report.append("")
+    report.append("=" * 50)
+    report.append("SCAN COMPLETED")
+    report.append("=" * 50)
+
+    return "\n".join(report)
+
+# Main Program
+if __name__ == "__main__":
+
+    print("OS Health Scanner")
+    print("-" * 30)
+
+    if is_admin():
+        print("Administrator Privileges: YES")
+    else:
+        print("Administrator Privileges: NO")
+        print("Please run as Administrator for full access.\n")
+
+    report = generate_report()
+
+    print(report)
+
+    with open("system_report.txt", "w") as file:
+        file.write(report)
+
+    print("\nReport saved as system_report.txt")
